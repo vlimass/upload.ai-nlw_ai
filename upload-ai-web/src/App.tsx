@@ -47,16 +47,16 @@ export function App() {
 
             <Separator orientation='vertical' className='h-6' /> 
 
-            <Button variant="outline">
-              <a 
-                href="https://github.com/vlimass/upload.ai-nlw_ai" 
-                className='flex items-center justify-center' 
-                target='_blank' 
-              >
+            <a 
+              href="https://github.com/vlimass/upload.ai-nlw_ai" 
+              className='flex items-center justify-center' 
+              target='_blank' 
+            >
+              <Button variant="outline">
                 <Github className="w-4 h-4 mr-2"/>  
                 Github
-              </a>
-            </Button>
+              </Button>
+            </a>
 
             <Separator orientation='vertical' className='h-6' /> 
 
