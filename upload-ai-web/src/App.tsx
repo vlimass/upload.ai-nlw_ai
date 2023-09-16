@@ -9,6 +9,8 @@ import { Slider } from './components/ui/slider';
 import { VideoInputForm } from './components/video-input-form';
 import { PromptSelect } from './components/prompt-select';
 import { useCompletion } from 'ai/react';
+import { ModeToggle } from './components/mode-toggle';
+import { ThemeProvider } from './components/theme-provider';
 
 export function App() {
   const [temperature, setTemperature] = useState(0.5)
@@ -33,101 +35,118 @@ export function App() {
   })
 
   return (
-    <div className='min-h-screen flex flex-col'>
-      <div className="px-6 py-3 flex items-center justify-between border-b">
-        <h1 className="text-xl font-bold">upload.ai</h1>
+    <ThemeProvider>
+      <div className='min-h-screen flex flex-col'>
+        <div className="px-6 py-3 flex items-center justify-between border-b">
+          <h1 className="text-xl font-bold">upload.ai</h1>
 
-        <div className="flex items-center gap-3">
-          <span className="text-sm text-muted-foreground">
-            Desenvolvido com 🤍 no NLW da Rocketseat
-          </span>
+          <div className="flex items-center gap-3">
+            <span className="text-sm text-muted-foreground">
+              Desenvolvido com ❤️ no NLW da Rocketseat
+            </span>
 
-          <Separator orientation='vertical' className='h-6' /> 
+            <Separator orientation='vertical' className='h-6' /> 
 
-          <Button variant="outline">
-            <Github className="w-4 h-4 mr-2"/>  
-            Github
-          </Button>
-        </div>
-      </div>
+            <Button variant="outline">
+              <a 
+                href="https://github.com/vlimass/upload.ai-nlw_ai" 
+                className='flex items-center justify-center' 
+                target='_blank' 
+              >
+                <Github className="w-4 h-4 mr-2"/>  
+                Github
+              </a>
+            </Button>
 
-      <main className='flex-1 p-6 flex gap-6'>
-        <div className='flex flex-col flex-1 gap-4'>
-          <div className='grid grid-rows-2 gap-4 flex-1'>
-            <Textarea
-              className='resize-none p-4 leading-relaxed'
-              placeholder='Inclua o prompt para a IA...' 
-              value={input}
-              onChange={handleInputChange}
-            />
+            <Separator orientation='vertical' className='h-6' /> 
 
-            <Textarea
-              className='resize-none p-4 leading-relaxed' 
-              placeholder='Resultado gerado pela IA...' 
-              readOnly 
-              value={completion}
-            />
+            <ModeToggle />
           </div>
-
-          <p className='text-sm text-muted-foreground'>
-            Lembre-se: você pode utilizar a variável <code className='text-violet-400'>{'{transcription}'}</code> no seu prompt para adicionar o conteúdo da transcrição do vídeo selecionado.
-          </p>
         </div>
 
-        <aside className='w-80 space-y-6'>
-          <VideoInputForm onVideoUploaded={setVideoId} />
-
-          <Separator />
-
-          <form onSubmit={handleSubmit} className='space-y-6'>
-            <div className='space-y-2'>
-              <Label>Prompt</Label>
-
-              <PromptSelect onPromptSelected={setInput} />
-            </div>
-
-            <div className='space-y-2'>
-              <Label>Modelo</Label>
-              <Select disabled defaultValue='gpt3.5'>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value='gpt3.5'>GPT 3.5-turbo 16k</SelectItem>
-                </SelectContent>
-              </Select>
-
-              <span className='block text-xs text-muted-foreground italic'>
-                Você poderá customizar essa opção em breve!
-              </span>
-            </div>
-
-            <Separator />
-
-            <div className='space-y-4'>
-              <Label>Temperatura</Label>
-              <Slider 
-                min={0}
-                max={1}
-                step={0.05}
-                value={[temperature]}
-                onValueChange={value => setTemperature(value[0])}
+        <main className='flex-1 p-6 flex gap-6'>
+          <div className='flex flex-col flex-1 gap-4'>
+            <div className='grid grid-rows-2 gap-4 flex-1'>
+              <Textarea
+                className='resize-none p-4 leading-relaxed'
+                placeholder='Inclua o prompt para a IA...' 
+                value={input}
+                onChange={handleInputChange}
               />
 
-              <span className='block text-xs text-muted-foreground italic leading-relaxed'>
-                Valores mais altos tendem a deixar o resultado mais criativo, porém com possíveis erros.
-              </span>
+              <Textarea
+                className='resize-none p-4 leading-relaxed' 
+                placeholder='Resultado gerado pela IA...' 
+                readOnly 
+                value={completion}
+              />
             </div>
+
+            <p className='text-sm text-muted-foreground'>
+              Lembre-se: você pode utilizar a variável <code className='text-rose-600'>{'{transcription}'}</code> no seu prompt para adicionar o conteúdo da transcrição do vídeo selecionado.
+            </p>
+          </div>
+
+          <aside className='w-80 space-y-6'>
+            <VideoInputForm onVideoUploaded={setVideoId} />
 
             <Separator />
 
-            <Button disabled={isLoading} type='submit' className='w-full'>
-              Executar
-              <Wand2 className='w-4 h-4 ml-2' />
-            </Button>
-          </form>
-        </aside>
-      </main>
-    </div>
+            <form onSubmit={handleSubmit} className='space-y-6'>
+              <div className='space-y-2'>
+                <Label>Prompt</Label>
+
+                <PromptSelect onPromptSelected={setInput} />
+              </div>
+
+              <div className='space-y-2'>
+                <Label>Modelo</Label>
+                <Select disabled defaultValue='gpt3.5'>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value='gpt3.5'>GPT 3.5-turbo 16k</SelectItem>
+                  </SelectContent>
+                </Select>
+
+                <span className='block text-xs text-muted-foreground italic'>
+                  Você poderá customizar essa opção em breve!
+                </span>
+              </div>
+
+              <Separator />
+
+              <div className='space-y-4'>
+                <div className='flex items-center justify-between'>
+                  <Label>Temperatura</Label>
+                  <span className='text-sm text-muted-foreground leading-none'>
+                    {temperature}
+                  </span>
+                </div>
+                <Slider 
+                  min={0}
+                  max={1}
+                  step={0.1}
+                  value={[temperature]}
+                  onValueChange={value => setTemperature(value[0])}
+                />
+
+                <span className='block text-xs text-muted-foreground italic leading-relaxed'>
+                  Valores mais altos tendem a deixar o resultado mais criativo, porém com possíveis erros.
+                </span>
+              </div>
+
+              <Separator />
+
+              <Button disabled={isLoading} type='submit' className='w-full'>
+                Executar
+                <Wand2 className='w-4 h-4 ml-2' />
+              </Button>
+            </form>
+          </aside>
+        </main>
+      </div>
+    </ThemeProvider>
   )
 }
